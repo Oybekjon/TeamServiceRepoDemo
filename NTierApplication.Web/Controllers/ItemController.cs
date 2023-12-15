@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace NTierApplication.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/[action]")]
     public class ItemController : ControllerBase
     {
         private readonly IItemService ItemService;
@@ -25,10 +25,9 @@ namespace NTierApplication.Web.Controllers
         }
 
         [HttpPost(Name = "CreateNew")]
-        public ItemViewModelExtended CreateNew(ItemViewModelExtended itemViewModel)
+        public ItemViewModelExtended CreateNew(ItemViewModelShort itemViewModel)
         {
-            ItemService.CreateNew(itemViewModel);
-            return itemViewModel;
+            return ItemService.CreateNew(itemViewModel);
         }
 
         [HttpGet]
@@ -38,5 +37,19 @@ namespace NTierApplication.Web.Controllers
         {
             return ItemService.GetById(id);
         }
+
+        [HttpDelete]
+        public void DeleteById(long id)
+        {
+            ItemService.Delete(id);
+        }
+
+        [HttpPut]
+        public void Update(ItemViewModelExtended item)
+        {
+            ItemService.Update(item);
+        }
+
+
     }
 }
