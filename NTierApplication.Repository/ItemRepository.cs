@@ -39,13 +39,5 @@ namespace NTierApplication.Repository
         {
             return DbContext.SaveChanges();
         }
-
-        public void Update(Item item)
-        {
-            if (DbContext.Entry(item).State != EntityState.Modified)
-            {
-                DbContext.Entry(item).State = EntityState.Modified;
-            }
-        }
     }
 }
