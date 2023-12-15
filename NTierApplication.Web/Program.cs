@@ -7,6 +7,7 @@ using NTierApplication.Web.ActionHelpers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+/// salom dunyo
 
 builder.Services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
