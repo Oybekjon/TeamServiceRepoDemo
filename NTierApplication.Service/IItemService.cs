@@ -4,7 +4,7 @@ namespace NTierApplication.Service
 {
     public interface IItemService
     {
-        void CreateNew(ItemViewModelExtended item);
+        ItemViewModelExtended CreateNew(ItemViewModelShort item);
         void Update(ItemViewModelExtended item);
         void Delete(long itemId);
         ICollection<ItemViewModelExtended> GetItems();

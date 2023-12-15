@@ -19,7 +19,7 @@ namespace NTierApplication.Service
             ItemRepository = itemRepository;
         }
 
-        public void CreateNew(ItemViewModelExtended item)
+        public ItemViewModelExtended CreateNew(ItemViewModelShort item)
         {
             if (item == null)
             {
@@ -42,12 +42,26 @@ namespace NTierApplication.Service
             };
             ItemRepository.Insert(entity);
             ItemRepository.SaveChanges();
-            item.ItemId = entity.ItemId;
+
+            var newExt = new ItemViewModelExtended
+            {
+                ItemId = entity.ItemId,
+                ItemName = entity.ItemName,
+                ItemType = entity.ItemType,
+                ItemDate = entity.ItemDate,
+            };
+
+            return newExt;
         }
 
         public void Delete(long itemId)
         {
-            throw new NotImplementedException();
+            var itemEntity = ItemRepository.GetAll().FirstOrDefault(x => x.ItemId == itemId);
+            if (itemEntity == null) 
+                throw new EntryNotFoundException("No such item to delete");
+
+            ItemRepository.Delete(itemEntity);
+            ItemRepository.SaveChanges();
         }
 
         public ItemViewModelExtended GetById(long id)
@@ -84,7 +98,14 @@ namespace NTierApplication.Service
 
         public void Update(ItemViewModelExtended item)
         {
-            throw new NotImplementedException();
+            var itemEntity = ItemRepository.GetAll().FirstOrDefault(x => x.ItemId == item.ItemId);
+            if (itemEntity == null)
+                throw new EntryNotFoundException("No such item to update");
+
+            itemEntity.ItemDate = item.ItemDate;
+            itemEntity.ItemName = item.ItemName;
+            itemEntity.ItemType = item.ItemType;
+            ItemRepository.SaveChanges();
         }
     }
 }
