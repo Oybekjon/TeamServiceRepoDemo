@@ -4,10 +4,10 @@ namespace NTierApplication.Service
 {
     public interface IItemService
     {
-        void CreateNew(ItemViewModel item);
-        void Update(ItemViewModel item);
+        void CreateNew(ItemViewModelExtended item);
+        void Update(ItemViewModelExtended item);
         void Delete(long itemId);
-        ICollection<ItemViewModel> GetItems();
-        ItemViewModel GetById(long id);
+        ICollection<ItemViewModelExtended> GetItems();
+        ItemViewModelExtended GetById(long id);
     }
 }

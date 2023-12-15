@@ -19,7 +19,7 @@ namespace NTierApplication.Service
             ItemRepository = itemRepository;
         }
 
-        public void CreateNew(ItemViewModel item)
+        public void CreateNew(ItemViewModelExtended item)
         {
             if (item == null)
             {
@@ -50,10 +50,10 @@ namespace NTierApplication.Service
             throw new NotImplementedException();
         }
 
-        public ItemViewModel GetById(long id)
+        public ItemViewModelExtended GetById(long id)
         {
             var result = ItemRepository.GetAll()
-                .Select(x => new ItemViewModel
+                .Select(x => new ItemViewModelExtended
                 {
                     ItemId = x.ItemId,
                     ItemDate = x.ItemDate,
@@ -71,9 +71,9 @@ namespace NTierApplication.Service
             //.FirstOrDefault();
         }
 
-        public ICollection<ItemViewModel> GetItems()
+        public ICollection<ItemViewModelExtended> GetItems()
         {
-            return ItemRepository.GetAll().Select(x => new ItemViewModel
+            return ItemRepository.GetAll().Select(x => new ItemViewModelExtended
             {
                 ItemId = x.ItemId,
                 ItemDate = x.ItemDate,
@@ -82,7 +82,7 @@ namespace NTierApplication.Service
             }).ToList();
         }
 
-        public void Update(ItemViewModel item)
+        public void Update(ItemViewModelExtended item)
         {
             throw new NotImplementedException();
         }

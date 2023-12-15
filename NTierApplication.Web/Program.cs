@@ -19,7 +19,7 @@ builder.Services.AddTransient<IItemRepository, ItemRepository>();
 builder.Services.AddTransient<MainContext>();
 
 builder.Services.AddDbContext<MainContext>(options => {
-    options.UseSqlServer("Data Source=localhost\\MSSQLSERVER2022;User ID=sa;Password=1;Initial Catalog=NTierApplication;TrustServerCertificate=True;");
+    options.UseSqlServer("Data Source=localhost;User ID=sa;Password=akobirakoone;Initial Catalog=NTierApplication;TrustServerCertificate=True;");
 });
 
 

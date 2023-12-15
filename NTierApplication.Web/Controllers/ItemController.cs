@@ -19,13 +19,13 @@ namespace NTierApplication.Web.Controllers
         [HttpGet]
         [Route("")]
         [SwaggerOperation(OperationId = "GetAll")]
-        public ICollection<ItemViewModel> GetAll()
+        public ICollection<ItemViewModelExtended> GetAll()
         {
             return ItemService.GetItems();
         }
 
         [HttpPost(Name = "CreateNew")]
-        public ItemViewModel CreateNew(ItemViewModel itemViewModel)
+        public ItemViewModelExtended CreateNew(ItemViewModelExtended itemViewModel)
         {
             ItemService.CreateNew(itemViewModel);
             return itemViewModel;
@@ -34,7 +34,7 @@ namespace NTierApplication.Web.Controllers
         [HttpGet]
         [Route("{id}")]
         [SwaggerOperation(OperationId = "GetById")]
-        public ItemViewModel GetById(long id)
+        public ItemViewModelExtended GetById(long id)
         {
             return ItemService.GetById(id);
         }

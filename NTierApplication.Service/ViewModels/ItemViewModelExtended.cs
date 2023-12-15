@@ -1,6 +1,16 @@
-﻿namespace NTierApplication.Service.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class ItemViewModelExtended : ItemViewModelShort
+namespace NTierApplication.Service.ViewModels
 {
-    public long? ItemId { get; set; }
+    public class ItemViewModel
+    {
+        public long? ItemId { get; set; }
+        public string ItemName { get; set; }
+        public int ItemType { get; set; }
+        public DateTime ItemDate { get; set; }
+    }
 }
