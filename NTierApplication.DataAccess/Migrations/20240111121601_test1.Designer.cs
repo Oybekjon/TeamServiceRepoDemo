@@ -12,8 +12,8 @@ using NTierApplication.DataAccess;
 namespace NTierApplication.DataAccess.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20231215104332_test2")]
-    partial class test2
+    [Migration("20240111121601_test1")]
+    partial class test1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

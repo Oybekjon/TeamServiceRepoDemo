@@ -12,8 +12,8 @@ using NTierApplication.DataAccess;
 namespace NTierApplication.DataAccess.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20231215103854_test1")]
-    partial class test1
+    [Migration("20240111122036_test2")]
+    partial class test2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,31 @@ namespace NTierApplication.DataAccess.Migrations
                     b.HasKey("ItemId");
 
                     b.ToTable("Item", (string)null);
+                });
+
+            modelBuilder.Entity("NTierApplication.DataAccess.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
