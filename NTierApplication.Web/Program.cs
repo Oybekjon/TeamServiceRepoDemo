@@ -16,6 +16,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IItemRepository, ItemRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<MainContext>();
 
 builder.Services.AddDbContext<MainContext>(options => {
