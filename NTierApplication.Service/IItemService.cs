@@ -6,7 +6,7 @@ public interface IItemService
 {
     ItemViewModelExtended CreateNew(ItemViewModelShort item);
     void Update(ItemViewModelExtended item);
-    void Delete(long itemId);
+    int Delete(long itemId);
     ICollection<ItemViewModelExtended> GetItems();
     ItemViewModelExtended GetById(long id);
 }

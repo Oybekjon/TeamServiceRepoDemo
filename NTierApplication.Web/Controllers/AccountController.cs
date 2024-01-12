@@ -47,7 +47,6 @@ public class AccountController : ControllerBase
             return Ok(model);
 
         return BadRequest();
-
     }
 
 

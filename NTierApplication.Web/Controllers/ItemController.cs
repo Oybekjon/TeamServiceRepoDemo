@@ -39,9 +39,9 @@ public class ItemController : ControllerBase
     }
 
     [HttpDelete]
-    public void DeleteById(long id)
+    public int DeleteById(long id)
     {
-        ItemService.Delete(id);
+        return ItemService.Delete(id);
     }
 
     [HttpPut]

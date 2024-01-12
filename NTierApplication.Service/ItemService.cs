@@ -49,14 +49,14 @@ public class ItemService : IItemService
         return newExt;
     }
 
-    public void Delete(long itemId)
+    public int Delete(long itemId)
     {
         var itemEntity = ItemRepository.GetAll().FirstOrDefault(x => x.ItemId == itemId);
         if (itemEntity == null)
             throw new EntryNotFoundException("No such item to delete");
 
         ItemRepository.Delete(itemEntity);
-        ItemRepository.SaveChanges();
+        return ItemRepository.SaveChanges();
     }
 
     public ItemViewModelExtended GetById(long id)

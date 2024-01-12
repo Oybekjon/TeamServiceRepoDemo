@@ -20,6 +20,15 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<MainContext>();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 builder.Services.AddDbContext<MainContext>(options => {
     options.UseSqlServer("Data Source=localhost;User ID=sa;Password=akobirakoone;Initial Catalog=NTierApplication;TrustServerCertificate=True;");
 });
@@ -33,6 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowSpecificOrigin");
+
 
 app.UseHttpsRedirection();
 
