@@ -25,7 +25,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPost(Name = "CreateNew")]
-    public ItemViewModelExtended CreateNew(ItemViewModelShort itemViewModel)
+    public ItemViewModelExtended CreateNew( [FromBody] ItemViewModelShort itemViewModel)
     {
         return ItemService.CreateNew(itemViewModel);
     }

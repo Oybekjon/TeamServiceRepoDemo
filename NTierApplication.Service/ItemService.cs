@@ -53,7 +53,7 @@ public class ItemService : IItemService
     {
         var itemEntity = ItemRepository.GetAll().FirstOrDefault(x => x.ItemId == itemId);
         if (itemEntity == null)
-            throw new EntryNotFoundException("No such item to delete");
+            return 0;
 
         ItemRepository.Delete(itemEntity);
         return ItemRepository.SaveChanges();
