@@ -26,7 +26,7 @@ public class AccountController : ControllerBase
         if(res == true)
             return Ok(model);
 
-        return BadRequest(model);
+        return BadRequest(false);
     }
 
     [HttpPost]
@@ -46,7 +46,7 @@ public class AccountController : ControllerBase
         if(check)
             return Ok(model);
 
-        return BadRequest();
+        return BadRequest(false);
     }
 
 

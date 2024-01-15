@@ -24,6 +24,18 @@ public class ItemController : ControllerBase
         return ItemService.GetItems();
     }
 
+    [HttpGet]
+    [Route("")]
+   
+    public IActionResult GetItems( int offset, int limit )
+    {
+
+        if (offset < 0 || limit < 0)
+            return BadRequest("Error");
+
+        return Ok( ItemService.GetItemsByPagination( offset, limit ));
+    }
+
     [HttpPost(Name = "CreateNew")]
     public ItemViewModelExtended CreateNew( [FromBody] ItemViewModelShort itemViewModel)
     {

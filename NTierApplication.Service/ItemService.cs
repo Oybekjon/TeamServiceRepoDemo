@@ -14,6 +14,40 @@ public class ItemService : IItemService
         ItemRepository = itemRepository;
     }
 
+    public ItemPaginationViewModel GetItemsByPagination(int offsetItems, int limitItems)
+    {
+
+        if(limitItems > 100) 
+            limitItems = 100;
+
+        var result = new ItemPaginationViewModel();
+        result.TotalCount = ItemRepository.GetAll().Count();
+
+
+        result.ItemsPagination = ItemRepository.GetAll().Skip(offsetItems)
+            .Take(limitItems).Select(x => new ItemViewModelExtended
+        {
+            ItemId = x.ItemId,
+            ItemDate = x.ItemDate,
+            ItemName = x.ItemName,
+            ItemType = x.ItemType
+        }).ToList();
+
+        return result;
+    }
+
+    public ICollection<ItemViewModelExtended> GetItems()
+    {
+        return ItemRepository.GetAll().Select(x => new ItemViewModelExtended
+        {
+            ItemId = x.ItemId,
+            ItemDate = x.ItemDate,
+            ItemName = x.ItemName,
+            ItemType = x.ItemType
+        }).ToList();
+    }
+
+
     public ItemViewModelExtended CreateNew(ItemViewModelShort item)
     {
         if (item == null)
@@ -80,16 +114,9 @@ public class ItemService : IItemService
         //.FirstOrDefault();
     }
 
-    public ICollection<ItemViewModelExtended> GetItems()
-    {
-        return ItemRepository.GetAll().Select(x => new ItemViewModelExtended
-        {
-            ItemId = x.ItemId,
-            ItemDate = x.ItemDate,
-            ItemName = x.ItemName,
-            ItemType = x.ItemType
-        }).ToList();
-    }
+   
+
+  
 
     public void Update(ItemViewModelExtended item)
     {
