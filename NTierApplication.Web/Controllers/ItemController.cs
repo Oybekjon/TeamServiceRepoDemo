@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NTierApplication.Service;
 using NTierApplication.Service.ViewModels;
 using Swashbuckle.AspNetCore.Annotations;
@@ -7,6 +8,7 @@ namespace NTierApplication.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
+[Authorize]
 public class ItemController : ControllerBase
 {
     private readonly IItemService ItemService;
@@ -18,6 +20,7 @@ public class ItemController : ControllerBase
 
     [HttpGet]
     [Route("")]
+    [AllowAnonymous]
     [SwaggerOperation(OperationId = "GetAll")]
     public ICollection<ItemViewModelExtended> GetAll()
     {
@@ -26,7 +29,7 @@ public class ItemController : ControllerBase
 
     [HttpGet]
     [Route("")]
-   
+    [AllowAnonymous]
     public IActionResult GetItems( int offset, int limit )
     {
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NTierApplication.Service;
 using NTierApplication.Service.ViewModels;
 
@@ -16,37 +17,26 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Register( RegisterUserViewModel model )
+    public bool Register( RegisterUserViewModel model )
     {
-        model.Password 
-            = BCrypt.Net.BCrypt.HashPassword( model.Password );
+        if (model.Password == model.Email || model.Password == null || model.Email == null)
+            return false;
+
+       
 
         var res = _userService.Register( model );
-
-        if(res == true)
-            return Ok(model);
-
-        return BadRequest(false);
+    
+        return res;
     }
 
     [HttpPost]
     public IActionResult LogIn(LogInViewModel model)
     {
         var res = _userService.Login(model);
+        if( res.AccessToken == null )
+            return NotFound();
 
-        bool check = false;
-
-        foreach(var user in res)
-        {
-            if(BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
-                check = true;
-        }
-
-
-        if(check)
-            return Ok(model);
-
-        return BadRequest(false);
+        return Ok(res);  
     }
 
 

@@ -6,5 +6,5 @@ namespace NTierApplication.Service;
 public interface IUserService
 {
     bool Register(RegisterUserViewModel rUserModel);
-    List<User> Login(LogInViewModel lUserModel);
+    ResponseModelLogin Login(LogInViewModel lUserModel);
 }

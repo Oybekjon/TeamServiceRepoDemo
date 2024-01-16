@@ -1,5 +1,7 @@
 ﻿using NTierApplication.DataAccess.Models;
+using NTierApplication.Errors;
 using NTierApplication.Repository;
+using NTierApplication.Service.Helpers;
 using NTierApplication.Service.ViewModels;
 
 namespace NTierApplication.Service;
@@ -7,21 +9,54 @@ namespace NTierApplication.Service;
 public class UserService : IUserService
 {
     private IUserRepository _userRepository;
+    private ITokenService _tokenSerivce;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, ITokenService tokenSerivce)
     {
         _userRepository = userRepository;
+        _tokenSerivce = tokenSerivce;
     }
 
-    public List<User> Login(LogInViewModel lUserModel)
-    { 
-        var users = _userRepository.GetAll();
+    public ResponseModelLogin Login(LogInViewModel lUserModel)
+    {
 
-        return users.Where(x => x.Email == lUserModel.Email).ToList();
+        if (lUserModel == null)
+        {
+            throw new ArgumentNullException(nameof(lUserModel));
+        }
+
+        var users = _userRepository.GetAll();
+        var check = false;
+        string token = null;
+       
+
+        var entityUser =  users.Where(x => x.Email == lUserModel.UserName).FirstOrDefault();
+
+        if (entityUser == null)
+            throw new EntryNotFoundException(nameof(entityUser));
+        
+        check = BCrypt.Net.BCrypt.Verify(lUserModel.Password, entityUser.Password);
+
+        if (check)
+        {
+            token = _tokenSerivce.GenerateToken(entityUser);
+        }
+
+        return new ResponseModelLogin()
+        {
+            AccessToken = token,
+            TokenType = "Bearer",
+            Expires = 86400
+        };
+
     }
 
     public bool Register(RegisterUserViewModel rUserModel)
     {
+
+        rUserModel.Password
+           = BCrypt.Net.BCrypt.HashPassword(rUserModel.Password);
+
         var newUserEntity = new User()
         {
             FirstName = rUserModel.FirstName,
