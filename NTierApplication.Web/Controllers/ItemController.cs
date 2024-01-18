@@ -36,13 +36,19 @@ public class ItemController : ControllerBase
         if (offset < 0 || limit < 0)
             return BadRequest("Error");
 
-        return Ok( ItemService.GetItemsByPagination( offset, limit ));
+        var res = ItemService.GetItemsByPagination(offset, limit);
+
+     
+
+        return Ok( res);
     }
 
     [HttpPost(Name = "CreateNew")]
     public ItemViewModelExtended CreateNew( [FromBody] ItemViewModelShort itemViewModel)
     {
-        return ItemService.CreateNew(itemViewModel);
+        var res = ItemService.CreateNew(itemViewModel);
+        Thread.Sleep(4000);
+        return res;
     }
 
     [HttpGet]
@@ -56,7 +62,9 @@ public class ItemController : ControllerBase
     [HttpDelete]
     public int DeleteById(long id)
     {
-        return ItemService.Delete(id);
+        var res = ItemService.Delete(id);
+        Thread.Sleep(4000);
+        return res;
     }
 
     [HttpPut]
