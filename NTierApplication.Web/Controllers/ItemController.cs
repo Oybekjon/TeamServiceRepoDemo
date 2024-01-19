@@ -38,8 +38,8 @@ public class ItemController : ControllerBase
 
         var res = ItemService.GetItemsByPagination(offset, limit);
 
-     
 
+        Thread.Sleep(2000);
         return Ok( res);
     }
 
