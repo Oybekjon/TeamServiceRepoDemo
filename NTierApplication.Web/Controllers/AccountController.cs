@@ -25,7 +25,7 @@ public class AccountController : ControllerBase
        
 
         var res = _userService.Register( model );
-        Thread.Sleep(4000);
+        Thread.Sleep(2000);
         return res;
     }
 
@@ -34,7 +34,7 @@ public class AccountController : ControllerBase
     {
         var res = _userService.Login(model);
 
-        Thread.Sleep(4000);
+        Thread.Sleep(2000);
 
         if( res.AccessToken == null )
             return NotFound();
