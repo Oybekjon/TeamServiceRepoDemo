@@ -17,16 +17,19 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public bool Register( RegisterUserViewModel model )
+    public ActionResult<bool> Register( RegisterUserViewModel model )
     {
         if (model.Password == model.Email || model.Password == null || model.Email == null)
-            return false;
+            return BadRequest(false);
 
        
 
         var res = _userService.Register( model );
         Thread.Sleep(2000);
-        return res;
+        if( res )
+            return Ok(res);
+
+        return NotFound(res);
     }
 
     [HttpPost]

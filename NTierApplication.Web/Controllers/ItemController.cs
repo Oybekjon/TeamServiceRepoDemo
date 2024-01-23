@@ -8,7 +8,7 @@ namespace NTierApplication.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-[Authorize]
+//[Authorize]
 public class ItemController : ControllerBase
 {
     private readonly IItemService ItemService;
@@ -68,7 +68,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPut]
-    public void Update(ItemViewModelExtended item)
+    public void Update([FromBody]  ItemViewModelExtended item)
     {
         ItemService.Update(item);
     }

@@ -65,7 +65,14 @@ public class UserService : IUserService
             Password = rUserModel.Password
         };
 
-        _userRepository.Insert(newUserEntity);
+        var users = _userRepository.GetAll();
+
+        var res = users.Select(x => x.Email).Any(x => x == rUserModel.Email);
+        if(!res)
+        {
+            _userRepository.Insert(newUserEntity);
+        }
+        
         var amount = _userRepository.SaveChanges();
         return amount > 0;
 
