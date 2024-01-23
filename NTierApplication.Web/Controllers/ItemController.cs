@@ -39,7 +39,7 @@ public class ItemController : ControllerBase
         var res = ItemService.GetItemsByPagination(offset, limit);
 
 
-        Thread.Sleep(1000);
+        Thread.Sleep(200);
         return Ok( res);
     }
 
@@ -47,7 +47,7 @@ public class ItemController : ControllerBase
     public ItemViewModelExtended CreateNew( [FromBody] ItemViewModelShort itemViewModel)
     {
         var res = ItemService.CreateNew(itemViewModel);
-        Thread.Sleep(2000);
+        Thread.Sleep(400);
         return res;
     }
 
@@ -63,7 +63,7 @@ public class ItemController : ControllerBase
     public int DeleteById(long id)
     {
         var res = ItemService.Delete(id);
-        Thread.Sleep(1000);
+        Thread.Sleep(200);
         return res;
     }
 
