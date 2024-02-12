@@ -8,6 +8,6 @@ public interface IItemService
     void Update(ItemViewModelExtended item);
     int Delete(long itemId);
     ICollection<ItemViewModelExtended> GetItems();
-    ItemPaginationViewModel GetItemsByPagination(int offsetItems, int limitItems);
+    ItemPaginationViewModel GetItemsByPagination(ItemQuery query);
     ItemViewModelExtended GetById(long id);
 }

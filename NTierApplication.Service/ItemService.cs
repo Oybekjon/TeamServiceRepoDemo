@@ -1,4 +1,4 @@
-using NTierApplication.DataAccess.Models;
+﻿using NTierApplication.DataAccess.Models;
 using NTierApplication.Errors;
 using NTierApplication.Repository;
 using NTierApplication.Service.ViewModels;
@@ -15,26 +15,74 @@ public class ItemService : IItemService
         ItemRepository = itemRepository;
     }
 
-    public ItemPaginationViewModel GetItemsByPagination(int offsetItems, int limitItems)
+    public ItemPaginationViewModel GetItemsByPagination(ItemQuery query)
     {
-
-        if(limitItems > 100) 
-            limitItems = 100;
+        if (query.Limit > 100)
+            query.Limit = 100;
 
         var result = new ItemPaginationViewModel();
-        result.TotalCount = ItemRepository.GetAll().Count();
-
-
-        result.ItemsPagination = ItemRepository.GetAll().Skip(offsetItems)
-            .Take(limitItems).Select(x => new ItemViewModelExtended
+        var dbQuery = ItemRepository.GetAll();
+        if (query.SortDir == "desc")
         {
-            ItemId = x.ItemId,
-            ItemDate = x.ItemDate,
-            ItemName = x.ItemName,
-            ItemType = x.ItemType
-        }).ToList();
+            dbQuery = SortDesc(query, dbQuery);
+        }
+        else
+        {
+            dbQuery = SortAsc(query, dbQuery);
+        }
+
+        if (query.Filter != null)
+        {
+            foreach (var item in query.Filter.Filters)
+            {
+                var isItemName = item.Filters.Any(x => x.Field == "itemName");
+                if (isItemName)
+                {
+                    var containsFilter = item.Filters.FirstOrDefault(x => x.Operator == "contains");
+                    if (containsFilter != null)
+                    {
+                        dbQuery = dbQuery.Where(x => x.ItemName.Contains(containsFilter.Value));
+                    }
+                }
+            }
+        }
+
+        result.TotalCount = dbQuery.Count();
+
+        result.ItemsPagination = dbQuery
+            .Skip(query.Offset)
+            .Take(query.Limit)
+            .Select(x => new ItemViewModelExtended
+            {
+                ItemId = x.ItemId,
+                ItemDate = x.ItemDate,
+                ItemName = x.ItemName,
+                ItemType = x.ItemType
+            }).ToList();
 
         return result;
+    }
+
+    private static IQueryable<Item> SortAsc(ItemQuery query, IQueryable<Item> dbQuery)
+    {
+        return query.SortField switch
+        {
+            "itemName" => dbQuery.OrderBy(x => x.ItemName),
+            "itemType" => dbQuery.OrderBy(x => x.ItemType),
+            "itemDate" => dbQuery.OrderBy(x => x.ItemDate),
+            _ => dbQuery.OrderBy(x => x.ItemId),
+        };
+    }
+
+    private static IQueryable<Item> SortDesc(ItemQuery query, IQueryable<Item> dbQuery)
+    {
+        return query.SortField switch
+        {
+            "itemName" => dbQuery.OrderByDescending(x => x.ItemName),
+            "itemType" => dbQuery.OrderByDescending(x => x.ItemType),
+            "itemDate" => dbQuery.OrderByDescending(x => x.ItemDate),
+            _ => dbQuery.OrderByDescending(x => x.ItemId),
+        };
     }
 
     public ICollection<ItemViewModelExtended> GetItems()

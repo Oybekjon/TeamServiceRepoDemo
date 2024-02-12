@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTierApplication.Service;
 using NTierApplication.Service.ViewModels;
@@ -30,17 +30,13 @@ public class ItemController : ControllerBase
     [HttpGet]
     [Route("")]
     //[AllowAnonymous]
-    public IActionResult GetItems( int offset, int limit )
+    public IActionResult GetItems([FromQuery] ItemQuery query)
     {
-
-        if (offset < 0 || limit < 0)
+        if (query.Offset < 0 || query.Limit < 0)
             return BadRequest("Error");
 
-        var res = ItemService.GetItemsByPagination(offset, limit);
-
-
-        Thread.Sleep(200);
-        return Ok( res);
+        var res = ItemService.GetItemsByPagination(query);
+        return Ok(res);
     }
 
     [HttpPost(Name = "CreateNew")]
