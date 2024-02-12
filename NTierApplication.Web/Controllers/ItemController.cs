@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NTierApplication.Service;
 using NTierApplication.Service.ViewModels;
@@ -44,7 +44,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPost(Name = "CreateNew")]
-    public ItemViewModelExtended CreateNew( [FromBody] ItemViewModelShort itemViewModel)
+    public ItemViewModelExtended CreateNew([FromBody] ItemViewModelShort itemViewModel)
     {
         var res = ItemService.CreateNew(itemViewModel);
         Thread.Sleep(400);
@@ -68,7 +68,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPut]
-    public void Update([FromBody]  ItemViewModelExtended item)
+    public void Update([FromBody] ItemViewModelExtended item)
     {
         ItemService.Update(item);
     }

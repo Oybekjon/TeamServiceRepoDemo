@@ -1,4 +1,4 @@
-﻿using NTierApplication.DataAccess.Models;
+using NTierApplication.DataAccess.Models;
 using NTierApplication.Errors;
 using NTierApplication.Repository;
 using NTierApplication.Service.ViewModels;
@@ -7,7 +7,8 @@ namespace NTierApplication.Service;
 
 public class ItemService : IItemService
 {
-    private IItemRepository ItemRepository;
+    /* Added readonly modifier */
+    private readonly IItemRepository ItemRepository;
 
     public ItemService(IItemRepository itemRepository)
     {
@@ -109,15 +110,10 @@ public class ItemService : IItemService
         {
             throw new EntryNotFoundException("No such item");
         }
-        return result;
-        //.Where(x => x.ItemId == id)
-        //.FirstOrDefault();
+        return result; /* Don't leave dead code */
     }
 
-   
-
-  
-
+    /* Removed unnecessary lines */
     public void Update(ItemViewModelExtended item)
     {
         var itemEntity = ItemRepository.GetAll().FirstOrDefault(x => x.ItemId == item.ItemId);
