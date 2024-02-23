@@ -1,6 +1,9 @@
-﻿using NTierApplication.DataAccess.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using NTierApplication.DataAccess.Models;
+using NTierApplication.DataAccess.Utils;
 using NTierApplication.Errors;
 using NTierApplication.Repository;
+using NTierApplication.Service.Common.Interface;
 using NTierApplication.Service.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,11 +15,13 @@ namespace NTierApplication.Service
 {
     public class ItemService : IItemService
     {
-        private IItemRepository ItemRepository;
+        private readonly IItemRepository ItemRepository;
+        private readonly IPaginator _paginator;
 
-        public ItemService(IItemRepository itemRepository)
+        public ItemService(IItemRepository itemRepository, IPaginator paginator)
         {
             ItemRepository = itemRepository;
+            this._paginator = paginator;
         }
 
         public void CreateNew(ItemViewModel item)
@@ -45,9 +50,15 @@ namespace NTierApplication.Service
             item.ItemId = entity.ItemId;
         }
 
-        public void Delete(long itemId)
+        public void Delete(long id)
         {
-            throw new NotImplementedException();
+            var result = ItemRepository.GetAll().Where(x => x.ItemId == id).FirstOrDefault();
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(Item));
+            }
+            ItemRepository.Delete(result);
+            ItemRepository.SaveChanges();
         }
 
         public ItemViewModel GetById(long id)
@@ -71,20 +82,52 @@ namespace NTierApplication.Service
             //.FirstOrDefault();
         }
 
-        public ICollection<ItemViewModel> GetItems()
+        public ItemGetAllViewModel GetItems(PaginationParams @params)
         {
-            return ItemRepository.GetAll().Select(x => new ItemViewModel
+            var items = ItemRepository.GetAll()
+            .Skip(@params.GetSkipCount())
+            .Take(@params.PageSize)
+            .ToList();
+            long itemCount = ItemRepository.GetAll().Count();
+
+            PaginationMetaData paginationMeta = _paginator.Paginate(itemCount, @params);
+
+            var itemView = items.Select(x => new ItemViewModel
             {
                 ItemId = x.ItemId,
                 ItemDate = x.ItemDate,
                 ItemName = x.ItemName,
                 ItemType = x.ItemType
             }).ToList();
+
+            ItemGetAllViewModel itemGetAllView = new ItemGetAllViewModel
+            {
+                Items = itemView,
+                PaginationMetaData = paginationMeta
+            };
+            return itemGetAllView;
         }
 
         public void Update(ItemViewModel item)
         {
-            throw new NotImplementedException();
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var result = ItemRepository.GetAll().Where(x => x.ItemId == item.ItemId).FirstOrDefault();
+
+            if (result == null)
+            {
+                throw new EntryNotFoundException("No such item");
+            }
+
+            result.ItemDate = item.ItemDate;
+            result.ItemName = item.ItemName;
+            result.ItemType = item.ItemType;
+
+            ItemRepository.Update(result);
+            ItemRepository.SaveChanges();
         }
     }
 }
